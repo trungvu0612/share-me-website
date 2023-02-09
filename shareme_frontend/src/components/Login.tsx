@@ -1,16 +1,21 @@
 import React from "react";
-import { GoogleLogin } from "@react-oauth/google";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import shareVideo from "../assets/mp4/shareVideo.mp4";
 import logo from "../assets/images/logo.png";
+import jwtDecode from "jwt-decode";
 
 export default function Login() {
-  const responseMessage = (response: object) => {
-    console.log(response);
+  const responseMessage = (response: CredentialResponse) => {
+    if (!response?.credential) return;
+    const userInfo = jwtDecode(response.credential);
+    console.log(userInfo);
+    return userInfo;
   };
   const errorMessage = (error: object | void) => {
     console.log(error);
   };
+
   return (
     <div className="flex justify-start items-center flex-col h-screen">
       <div className="relative w-full h-full">
